@@ -1,13 +1,7 @@
 package com.keycodehelp.entities;
 
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "keycode_requests")
@@ -18,13 +12,24 @@ public class KeycodeRequest {
     private Long id;
 
     @Column(nullable = false)
-    private String requestDetails;
-
-    @Column(nullable = false)
     private String vin;
 
-    @Column(name = "request_time", nullable = false)
-    private LocalDateTime requestTime;
+    @Column(nullable = false)
+    private Date requestDate;
 
-    // Add other fields and getters/setters as needed
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    // Constructors, Getters, and Setters
+
+    public KeycodeRequest() {}
+
+    public KeycodeRequest(String vin, Date requestDate, User user) {
+        this.vin = vin;
+        this.requestDate = requestDate;
+        this.user = user;
+    }
+
+    // Getters and setters here...
 }

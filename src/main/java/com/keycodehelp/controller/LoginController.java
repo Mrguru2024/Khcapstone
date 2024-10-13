@@ -1,24 +1,24 @@
 package com.keycodehelp.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.keycodehelp.services.LoginService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@RequestMapping("/api/login")
 public class LoginController {
 
-    @GetMapping("/login")
-    public String loginForm() {
-        return "login";  // Returns the login.html in the static folder
-    }
+    @Autowired
+    private LoginService loginService;
 
-    @PostMapping("/login")
-    public String loginSubmit(@RequestParam String username, @RequestParam String password) {
-        // For simplicity, we are not doing actual authentication here
-        if ("admin".equals(username) && "password".equals(password)) {
-            return "redirect:/home";  // If login is successful, redirect to home
+    // Example endpoint to handle login
+    @PostMapping
+    public String login(@RequestParam String username, @RequestParam String password) {
+        boolean isValidUser = loginService.validateUserCredentials(username, password);
+        if (isValidUser) {
+            return "Login successful!";
+        } else {
+            return "Invalid credentials!";
         }
-        return "login";  // If login fails, show login page again
     }
 }

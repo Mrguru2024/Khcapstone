@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import com.keycodehelp.entities.Invoice;
-import com.keycodehelp.service.InvoiceService;
+import com.keycodehelp.services.InvoiceService;
 
 @CrossOrigin(origins = "http://localhost:3000")  // Adjust this to the frontend's URL if needed
 @RestController

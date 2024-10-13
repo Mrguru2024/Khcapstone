@@ -1,13 +1,10 @@
 package com.keycodehelp.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.Date;
+
 @Entity
-@Table(name = "keycodes")
+@Table(name = "keycode")
 public class Keycode {
 
     @Id
@@ -20,5 +17,23 @@ public class Keycode {
     @Column(nullable = false)
     private String keycode;
 
+    @Column(nullable = false)
+    private Date createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     // Constructors, Getters, and Setters
+
+    public Keycode() {}
+
+    public Keycode(String vin, String keycode, Date createdAt, User user) {
+        this.vin = vin;
+        this.keycode = keycode;
+        this.createdAt = createdAt;
+        this.user = user;
+    }
+
+    // Getters and setters here...
 }
