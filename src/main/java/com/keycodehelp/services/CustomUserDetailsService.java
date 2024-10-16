@@ -1,6 +1,6 @@
 package com.keycodehelp.services;
 
-import com.keycodehelp.entities.User;
+import com.keycodehelp.entities.User;  // Your custom User entity
 import com.keycodehelp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,15 +19,20 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Correct way to handle Optional
+        // Fetch the custom user entity
         Optional<User> userOptional = userRepository.findByUsername(username);
 
-        // Use orElseThrow to handle the case where the user is not found
-        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+        if (!userOptional.isPresent()) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
 
-        // Return a Spring Security User object
+        User user = userOptional.get();
+
+        // Use the fully qualified name for Spring Security's User class
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(), user.getPassword(), new ArrayList<>()
+                user.getUsername(),
+                user.getPassword(),
+                new ArrayList<>()  // Authorities/roles can be added here
         );
     }
 }
